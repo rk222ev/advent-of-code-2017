@@ -3,29 +3,22 @@
    [adventofcode-2017.utils :as utils]))
 
 
-(defn- str->int-list
-  [s]
-  (vec (map #(Integer/parseInt (str %)) s)))
+(defn- str->int-list [s] (vec (map #(Integer/parseInt (str %)) s)))
 
 
 (defn- calculate
   [coll x]
-  (let [last-val (:last coll)
-        sum (:sum coll)]
-    {:sum (if (= x last-val)
-            (+ sum x)
-            sum)
-     :last x}))
+  (let [old-sum (:sum coll)
+        new-sum (if (= x (:last coll))
+                  (+ old-sum x)
+                  old-sum)]
+    {:sum new-sum :last x}))
+
 
 (defn run
   [s]
   (let [xs (str->int-list s)]
-    (:sum
-     (reduce calculate
-             {:sum 0
-              :last (last xs)}
-             xs))))
+    (:sum (reduce calculate {:sum 0 :last (last xs)} xs))))
 
-(defn main
-  []
-  (run (utils/read-input "one")))
+
+(defn main [] (run (utils/read-input "one")))

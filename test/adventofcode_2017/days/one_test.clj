@@ -9,3 +9,6 @@
     (is (= (run "1111") 4))
     (is (= (run "1234") 0))
     (is (= (run "91212129") 9))))
+
+(deftest test-real-input
+  (is (= (main) 997)))
