@@ -4,20 +4,23 @@
    [adventofcode-2017.utils :as utils]))
 
 
-(defn split-each-on-tabs [xs] (vec (map (fn [x] (str/split x #"\t")) xs)))
-(defn ->ints [xs] (map (fn [x] (utils/str->int-list x)) xs))
-(defn find-lowest [xs] (apply min xs))
-(defn find-highest [xs] (apply max xs))
-(defn calculate-checksum [xs] (- (find-highest xs) (find-lowest xs)))
+(defn- split-each-on-tab [xs] (vec (map (fn [x] (str/split x #"\t")) xs)))
+(defn- ->ints [xs] (map (fn [x] (utils/str->int-list x)) xs))
+
 
 (defn run
   [list-of-rows]
-  (reduce + (map calculate-checksum list-of-rows)))
+  (->>
+   list-of-rows
+   (map (fn [xs] (- (apply max xs) (apply min xs))))
+   (reduce +)))
 
 
-(defn main [] (run (->
-                    (utils/read-input "two")
-                    (str/split #"\n")
-                    (split-each-on-tabs)
-                    ->ints
-                    )))
+(defn main
+  []
+  (run
+    (->
+     (utils/read-input "two")
+     (str/split #"\n")
+     split-each-on-tab
+     ->ints)))
