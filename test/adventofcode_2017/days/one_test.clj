@@ -12,3 +12,11 @@
 
 (deftest test-real-input
   (is (= (main) 997)))
+
+
+(deftest b-test
+  (testing "Will calculate correct sums for part 2"
+    (is (= (run2 "1212") 6))
+    (is (= (run2 "1221") 0))
+    (is (= (run2 "123425") 4))
+    (is (= (run2 "12131415") 4))))
