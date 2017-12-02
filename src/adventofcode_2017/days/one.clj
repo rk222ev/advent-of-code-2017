@@ -1,9 +1,7 @@
 (ns adventofcode-2017.days.one
   (:require
+   [clojure.string :as str]
    [adventofcode-2017.utils :as utils]))
-
-
-(defn- str->int-list [s] (vec (map #(Integer/parseInt (str %)) s)))
 
 
 (defn- calculate
@@ -17,8 +15,8 @@
 
 (defn run
   [s]
-  (let [xs (str->int-list s)]
+  (let [xs (utils/char->int-list s)]
     (:sum (reduce calculate {:sum 0 :last (last xs)} xs))))
 
 
-(defn main [] (run (utils/read-input "one")))
+(defn main [] (run (str/trim-newline(utils/read-input "one"))))
