@@ -5,18 +5,22 @@
 
 (deftest a-test
   (testing "Will calculate correct sums"
-    (is (= (run "1122") 3))
-    (is (= (run "1111") 4))
-    (is (= (run "1234") 0))
-    (is (= (run "91212129") 9))))
-
-(deftest test-real-input
-  (is (= (main) 997)))
+    (is (= (run [1 1 2 2] 1) 3))
+    (is (= (run [1 1 1 1] 1) 4))
+    (is (= (run [1 2 3 4] 1) 0))
+    (is (= (run [9 1 2 1 2 1 2 9] 1) 9))))
 
 
 (deftest b-test
   (testing "Will calculate correct sums for part 2"
-    (is (= (run2 "1212") 6))
-    (is (= (run2 "1221") 0))
-    (is (= (run2 "123425") 4))
-    (is (= (run2 "12131415") 4))))
+    (is (= (run [1 2 1 2] 2) 6))
+    (is (= (run [1 2 2 1] 2) 0))
+    (is (= (run [1 2 3 4 2 2] 3) 4))
+    (is (= (run [1 2 1 3 1 4 1 5] 4) 4))))
+
+
+(deftest real-input
+  (testing "Will calculate correctly using the real input"
+    (is (= (main)
+           {:part-1 997
+            :part-2 1358}))))
