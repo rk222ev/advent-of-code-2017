@@ -9,18 +9,40 @@
 
 
 (defn run
-  [list-of-rows]
+  [list-of-rows checksum]
   (->>
    list-of-rows
-   (map (fn [xs] (- (apply max xs) (apply min xs))))
+   (map checksum)
    (apply +)))
+
+
+(defn per-value
+  [n xs]
+  (cond
+    (empty? xs) nil
+    (= 0 (mod n (first xs))) (/ n (first xs))
+    (= 0 (mod (first xs) n)) (/ (first xs) n)
+    :default (per-value n (rest xs))))
+
+
+(defn get-first-evenly-div
+  [n xs]
+  (if (empty? xs)
+    nil
+    (let [v (per-value n xs)]
+      (if v v (get-first-evenly-div (first xs) (rest xs))))))
+
+
+(defn checksum-part-1 [xs] (- (apply max xs) (apply min xs)))
+(defn checksum-part-2 [xs] (get-first-evenly-div (first xs) (rest xs)))
 
 
 (defn main
   []
-  (->
-   (utils/read-input "two")
-   (str/split #"\n")
-   split-each-on-tab
-   ->ints
-   run))
+  (let [input (->
+               (utils/read-input "two")
+               (str/split #"\n")
+               split-each-on-tab
+               ->ints)]
+    {:part-1 (run input checksum-part-1)
+     :part-2 (run input checksum-part-2)}))
