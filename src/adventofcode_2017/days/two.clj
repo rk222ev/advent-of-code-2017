@@ -13,14 +13,14 @@
   (->>
    list-of-rows
    (map (fn [xs] (- (apply max xs) (apply min xs))))
-   (reduce +)))
+   (apply +)))
 
 
 (defn main
   []
-  (run
-    (->
-     (utils/read-input "two")
-     (str/split #"\n")
-     split-each-on-tab
-     ->ints)))
+  (->
+   (utils/read-input "two")
+   (str/split #"\n")
+   split-each-on-tab
+   ->ints
+   run))
