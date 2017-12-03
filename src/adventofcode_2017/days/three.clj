@@ -1,48 +1,35 @@
-(ns adventofcode-2017.days.three
-  (:require
-   [clojure.string :as str]
-   [adventofcode-2017.utils :as utils]))
+(ns adventofcode-2017.days.three)
 
 
-(defn find-row-coord
-  [n current-layer row-size]
-  (second
-   (first
-    (filter
-     #(= (first %) n)
-     (map
-      vector
-      current-layer
-      (drop 1
-            (cycle
-             (map #(Math/abs %)
-                  (map #(.intValue %)
-                       (range (- (Math/floor (/ row-size  2)))
-                              (- (/ row-size 2) 1)))))))))))
-
-(defn walk-to-zero
+(defn find-layer-coord
   [n layer row-size]
   (let [min (-  (* row-size 4) 5)
         max (* row-size row-size)
-        current-layer (range (- max min) (+ 1 max))]
-    (reduce + [layer (find-row-coord n current-layer row-size)])))
+        row-middle-index (/ row-size  2)]
+    (reduce + [layer (->> (range (- (Math/floor row-middle-index)) (- row-middle-index 1))
+                          (map #(.intValue %))
+                          (map #(Math/abs %))
+                          cycle
+                          (drop 1)
+                          (map vector (range (- max min) (+ 1 max)))
+                          (filter #(= (first %) n))
+                          first
+                          second)])))
 
 
-(defn find-layer-for
+(defn calculate-distance-for
   ([n]
-   (find-layer-for n 0 1))
+   (calculate-distance-for n 0 1))
   ([n layer row-size]
-   (let [layer-max (* row-size row-size)]
-     (if (> n layer-max)
-       (find-layer-for n (+ layer 1) (+ row-size 2))
-       (walk-to-zero n layer row-size)))))
+   (if (> n (* row-size row-size))
+     (calculate-distance-for n (+ layer 1) (+ row-size 2))
+     (find-layer-coord n layer row-size))))
 
 
 (defn run
   [n]
-   (find-layer-for 289326))
+   (calculate-distance-for 289326))
 
-;; Well... That was awful...
 
 (defn main
   []
